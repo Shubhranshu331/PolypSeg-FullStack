@@ -1,19 +1,67 @@
-# PolypSeg-FullStack
+# PolypSeg AI — Colonoscopy Polyp Segmentation
+
+<div align="center">
+
+![PolypSeg Banner](https://img.shields.io/badge/Attention%20U--Net-Medical%20Imaging%20AI-F5A623?style=for-the-badge)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16.1-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3.0.3-000000?style=for-the-badge&logo=flask&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 **Full-stack AI web application for colonoscopy polyp segmentation using Attention U-Net.**
 
-Live: [https://polypseg.vercel.app](https://polypseg.vercel.app) ← update after deploy  
-Dataset: [Kaggle — CVC-ClinicDB](https://www.kaggle.com/datasets/shubhranshu331/colonoscopy-images)  
-Built by: [Shubhranshu](https://github.com/Shubhranshu331)
+[Live Demo](https://polypseg.vercel.app) · [Dataset](https://www.kaggle.com/datasets/shubhranshu331/colonoscopy-images) · [Portfolio](https://portfolio-pied-seven-64.vercel.app/)
+
+</div>
 
 ---
 
 ## What It Does
 
 Upload any colonoscopy image → Attention U-Net segments polyp regions → returns:
-- Binary segmentation mask
-- Amber-highlighted overlay
-- Polyp coverage percentage and pixel count
+
+- ✅ Binary segmentation mask
+- ✅ Amber-highlighted overlay on original image
+- ✅ Polyp coverage percentage
+- ✅ Polyp pixel count
+- ✅ Polyp detected / clear status
+
+---
+
+## Model Performance
+
+| Metric | Score |
+|--------|-------|
+| Test Dice Score | **76.81%** |
+| Test IoU Score | **69.01%** |
+| Architecture | Attention U-Net |
+| Input Size | 256 × 256 × 3 (RGB) |
+| Output | 256 × 256 × 1 (Binary Mask) |
+| Loss Function | BCE + Dice Loss |
+| Dataset | CVC-ClinicDB (612 frames) |
+| Framework | TensorFlow 2.16 / Keras |
+
+---
+
+## Why This Matters
+
+Colorectal cancer is the **third most common cancer** worldwide. Up to **25% of polyps are missed** during standard colonoscopy due to human fatigue and poor visibility. Early detection increases survival rate to **90%+**.
+
+This model acts as a reliable AI second opinion for clinicians — flagging polyp regions for review without replacing the doctor.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 14, Tailwind CSS, Three.js |
+| Backend | Flask, Gunicorn |
+| ML Model | TensorFlow/Keras, Attention U-Net |
+| Image Processing | Pillow, NumPy, tifffile |
+| Frontend Hosting | Vercel |
+| Backend Hosting | Render.com |
+| Dataset | CVC-ClinicDB (Kaggle) |
 
 ---
 
@@ -26,7 +74,7 @@ PolypSeg-FullStack/
 │   ├── requirements.txt        Python dependencies
 │   ├── Procfile                Render start command
 │   ├── .python-version         Pins Python 3.11.9
-│   └── best_model.keras        ← add your model here
+│   └── best_model.keras        Trained Attention U-Net (Git LFS)
 │
 ├── frontend/
 │   ├── src/
@@ -35,15 +83,16 @@ PolypSeg-FullStack/
 │   │   │   ├── page.js
 │   │   │   └── globals.css
 │   │   └── components/
-│   │       ├── LoadingLogo.jsx  ← swap Canva video here
-│   │       ├── Navbar.jsx
+│   │       ├── PageLoader.jsx   Full screen loading animation
+│   │       ├── LoadingLogo.jsx  Demo section loader
+│   │       ├── Navbar.jsx       Responsive navbar + hamburger menu
 │   │       ├── Hero.jsx         3D floating cubes + headline
-│   │       ├── About.jsx
-│   │       ├── HowItWorks.jsx
-│   │       ├── ModelStats.jsx   Animated counters
-│   │       ├── Demo.jsx         Upload + results
-│   │       ├── TechStack.jsx
-│   │       └── Footer.jsx
+│   │       ├── About.jsx        Project context + stats
+│   │       ├── HowItWorks.jsx   Pipeline explanation
+│   │       ├── ModelStats.jsx   Animated performance counters
+│   │       ├── Demo.jsx         Upload + results (3 panel)
+│   │       ├── TechStack.jsx    Technologies used
+│   │       └── Footer.jsx       Links + credits
 │   ├── package.json
 │   ├── tailwind.config.js
 │   ├── next.config.js
@@ -60,11 +109,6 @@ PolypSeg-FullStack/
 
 ```bash
 cd backend
-
-# Add your model file
-cp /path/to/best_model.keras .
-
-# Create virtual environment
 python -m venv venv
 
 # Activate (Windows)
@@ -72,31 +116,23 @@ venv\Scripts\activate
 # Activate (Mac/Linux)
 source venv/bin/activate
 
-# Install dependencies
 pip install -r requirements.txt
-
-# Start server
 python app.py
 # Running at http://localhost:5000
 ```
 
-Test it: open `http://localhost:5000` — you should see `{"status": "ok"}`
+Test: open `http://localhost:5000` → should see `{"status": "ok"}`
 
 ### Frontend
 
 ```bash
 cd frontend
-
-# Create env file
-# Windows:
-echo NEXT_PUBLIC_API_URL=http://localhost:5000 > .env.local
-# Mac/Linux:
-cp .env.example .env.local
-
-# Install packages
 npm install
 
-# Start dev server
+# Create env file (Windows Notepad → Save As → All Files → .env.local)
+# Content:
+NEXT_PUBLIC_API_URL=http://localhost:5000
+
 npm run dev
 # Open http://localhost:3000
 ```
@@ -106,7 +142,7 @@ npm run dev
 ## Deploy Backend to Render.com
 
 1. Push repo to GitHub
-2. Go to render.com → New → Web Service
+2. Go to [render.com](https://render.com) → New → Web Service
 3. Connect your GitHub repo
 
 | Field | Value |
@@ -117,45 +153,62 @@ npm run dev
 | Start Command | `gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 1` |
 | Instance Type | Free |
 
-4. Click Create Web Service
-5. Wait 5–10 minutes for first deploy
-6. Get your URL: `https://polypseg-api.onrender.com`
+4. Add environment variable: `PYTHON_VERSION` = `3.11.9`
+5. Deploy → get URL: `https://polypseg-api.onrender.com`
 
-> ⚠️ Commit `best_model.keras` to the repo — Render pulls it from GitHub
+> ⚠️ First request after inactivity takes 30-60s as Render wakes the instance. This is expected on the free tier.
 
 ---
 
 ## Deploy Frontend to Vercel
 
-1. Go to vercel.com → New Project → Import your repo
+1. Go to [vercel.com](https://vercel.com) → New Project → Import repo
 2. Set Root Directory: `frontend`
-3. Add Environment Variable:
+3. Add environment variable:
    - Key: `NEXT_PUBLIC_API_URL`
-   - Value: `https://polypseg-api.onrender.com` ← your Render URL
-4. Click Deploy
-5. Get your URL: `https://polypseg.vercel.app`
+   - Value: `https://polypseg-api.onrender.com`
+4. Deploy → get URL: `https://polypseg.vercel.app`
 
 ---
 
-## Swap Loading Animation (Canva Video)
+## API Reference
 
-1. Export your Canva animation as `loading-video.mp4`
-2. Place it in `frontend/public/loading-video.mp4`
-3. Open `frontend/src/components/LoadingLogo.jsx`
-4. Uncomment the `<video>` block and delete the placeholder `<div>`
-5. Push to GitHub — Vercel auto-redeploys
+### `GET /`
+Health check
+```json
+{ "status": "ok", "message": "PolypSeg API is running" }
+```
+
+### `POST /predict`
+Upload colonoscopy image for segmentation.
+
+**Request:** `multipart/form-data` with key `image` (JPG, PNG, TIF)
+
+**Response:**
+```json
+{
+  "original": "<base64 PNG>",
+  "mask":     "<base64 PNG>",
+  "overlay":  "<base64 PNG>",
+  "metrics": {
+    "polyp_pixels":   1234,
+    "total_pixels":   65536,
+    "polyp_coverage": 1.88,
+    "polyp_detected": true
+  }
+}
+```
 
 ---
 
-## Model Details
+## Dataset
 
-| Property | Value |
-|----------|-------|
-| Architecture | Attention U-Net |
-| Framework | TensorFlow 2.x / Keras |
-| Input | 256 × 256 × 3 (RGB) |
-| Output | 256 × 256 × 1 (binary mask) |
-| Loss | BCE + Dice Loss |
-| Test Dice | 0.7681 |
-| Test IoU | 0.6901 |
-| Dataset | CVC-ClinicDB |
+**CVC-ClinicDB** — 612 colonoscopy frames with ground truth polyp masks.
+
+Available on Kaggle: [shubhranshu331/colonoscopy-images](https://www.kaggle.com/datasets/shubhranshu331/colonoscopy-images)
+
+---
+
+## Author
+
+Built by **Shubhranshu** — [Portfolio](https://portfolio-pied-seven-64.vercel.app/) · [GitHub](https://github.com/Shubhranshu331)
