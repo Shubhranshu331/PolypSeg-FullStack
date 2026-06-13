@@ -60,46 +60,73 @@ This model acts as a reliable AI second opinion for clinicians — flagging poly
 | ML Model | TensorFlow/Keras, Attention U-Net |
 | Image Processing | Pillow, NumPy, tifffile |
 | Frontend Hosting | Vercel |
-| Backend Hosting | Render.com |
+| Backend Hosting | HuggingFace Spaces (Docker) |
 | Dataset | CVC-ClinicDB (Kaggle) |
 
 ---
 
 ## Folder Structure
-
-```
 PolypSeg-FullStack/
+
 ├── backend/
+
 │   ├── app.py                  Flask API + /predict endpoint
+
 │   ├── requirements.txt        Python dependencies
-│   ├── Procfile                Render start command
+
+│   ├── Dockerfile              HuggingFace Docker config
+
 │   ├── .python-version         Pins Python 3.11.9
+
 │   └── best_model.keras        Trained Attention U-Net (Git LFS)
+
 │
+
 ├── frontend/
+
 │   ├── src/
+
 │   │   ├── app/
+
 │   │   │   ├── layout.js
+
 │   │   │   ├── page.js
+
 │   │   │   └── globals.css
+
 │   │   └── components/
+
 │   │       ├── PageLoader.jsx   Full screen loading animation
+
 │   │       ├── LoadingLogo.jsx  Demo section loader
+
 │   │       ├── Navbar.jsx       Responsive navbar + hamburger menu
+
 │   │       ├── Hero.jsx         3D floating cubes + headline
+
 │   │       ├── About.jsx        Project context + stats
+
 │   │       ├── HowItWorks.jsx   Pipeline explanation
+
 │   │       ├── ModelStats.jsx   Animated performance counters
+
 │   │       ├── Demo.jsx         Upload + results (3 panel)
+
 │   │       ├── TechStack.jsx    Technologies used
+
 │   │       └── Footer.jsx       Links + credits
+
 │   ├── package.json
+
 │   ├── tailwind.config.js
+
 │   ├── next.config.js
+
 │   └── .env.example
+
 │
+
 └── README.md
-```
 
 ---
 
@@ -139,24 +166,15 @@ npm run dev
 
 ---
 
-## Deploy Backend to Render.com
+## Deploy Backend to HuggingFace Spaces
 
-1. Push repo to GitHub
-2. Go to [render.com](https://render.com) → New → Web Service
-3. Connect your GitHub repo
+1. Go to [huggingface.co](https://huggingface.co) → New Space → Docker SDK → Public
+2. Add a `Dockerfile` to your backend folder
+3. Push backend folder to the Space repo using git
+4. HuggingFace builds the Docker container automatically
+5. API live at: `https://Shubhranshu331-polypseg-api.hf.space`
 
-| Field | Value |
-|-------|-------|
-| Root Directory | `backend` |
-| Runtime | Python 3 |
-| Build Command | `pip install -r requirements.txt` |
-| Start Command | `gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 1` |
-| Instance Type | Free |
-
-4. Add environment variable: `PYTHON_VERSION` = `3.11.9`
-5. Deploy → get URL: `https://polypseg-api.onrender.com`
-
-> ⚠️ First request after inactivity takes 30-60s as Render wakes the instance. This is expected on the free tier.
+> ⚠️ HuggingFace free tier gives 16GB RAM — perfect for TensorFlow models.
 
 ---
 
@@ -166,7 +184,7 @@ npm run dev
 2. Set Root Directory: `frontend`
 3. Add environment variable:
    - Key: `NEXT_PUBLIC_API_URL`
-   - Value: `https://polypseg-api.onrender.com`
+   - Value: `https://Shubhranshu331-polypseg-api.hf.space`
 4. Deploy → get URL: `https://polypseg.vercel.app`
 
 ---
