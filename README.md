@@ -67,65 +67,35 @@ This model acts as a reliable AI second opinion for clinicians — flagging poly
 
 ## Folder Structure
 PolypSeg-FullStack/
-
 ├── backend/
-
 │   ├── app.py                  Flask API + /predict endpoint
-
 │   ├── requirements.txt        Python dependencies
-
 │   ├── Dockerfile              HuggingFace Docker config
-
 │   ├── .python-version         Pins Python 3.11.9
-
 │   └── best_model.keras        Trained Attention U-Net (Git LFS)
-
 │
-
 ├── frontend/
-
 │   ├── src/
-
 │   │   ├── app/
-
 │   │   │   ├── layout.js
-
 │   │   │   ├── page.js
-
 │   │   │   └── globals.css
-
 │   │   └── components/
-
 │   │       ├── PageLoader.jsx   Full screen loading animation
-
 │   │       ├── LoadingLogo.jsx  Demo section loader
-
 │   │       ├── Navbar.jsx       Responsive navbar + hamburger menu
-
 │   │       ├── Hero.jsx         3D floating cubes + headline
-
 │   │       ├── About.jsx        Project context + stats
-
 │   │       ├── HowItWorks.jsx   Pipeline explanation
-
 │   │       ├── ModelStats.jsx   Animated performance counters
-
 │   │       ├── Demo.jsx         Upload + results (3 panel)
-
 │   │       ├── TechStack.jsx    Technologies used
-
 │   │       └── Footer.jsx       Links + credits
-
 │   ├── package.json
-
 │   ├── tailwind.config.js
-
 │   ├── next.config.js
-
 │   └── .env.example
-
 │
-
 └── README.md
 
 ---
@@ -224,6 +194,21 @@ Upload colonoscopy image for segmentation.
 **CVC-ClinicDB** — 612 colonoscopy frames with ground truth polyp masks.
 
 Available on Kaggle: [shubhranshu331/colonoscopy-images](https://www.kaggle.com/datasets/shubhranshu331/colonoscopy-images)
+
+---
+
+## Model Training
+
+The Attention U-Net model was trained in a separate repository.
+
+Training code, notebooks, and experiments: [Polyp Image Segmentation — Attention U-Net](https://github.com/Shubhranshu331/Polyp--Image_segmentation-UNET-)
+
+Includes:
+- Data preprocessing pipeline
+- Attention U-Net architecture implementation
+- Training loop with BCE + Dice loss
+- Evaluation metrics (Dice, IoU)
+- Model export to `.keras` format
 
 ---
 
