@@ -174,7 +174,7 @@ export default function Demo() {
 
             {/* Note about cold start */}
             <p className="text-xs text-ink-300 text-center">
-              ⚡ First request may take 30–60 s as the backend wakes up on Render's free tier.
+              ⚡ First request may take 60–90 s as the model loads on HuggingFace Spaces.
             </p>
 
             {/* Error */}
